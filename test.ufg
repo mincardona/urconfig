@@ -1,17 +1,20 @@
+# this is a test configuration file to demonstrate syntax
+# and to test library functions
+
 global-version = 1.0.0
 
 [locale]
 lang = en
 date-format=DD-MM-YYYY
 
-[video.display]
+[video.display     ]
 video-mode=1920x1080x144
 gamma-correction=1.1
 fullscreen-mode = exclusive
 
 [video.quality]
-bloom=1
-msaa=4
+bloom = 1
+msaa  = 4
 texture-filter-mode= 3
 texture-anisotropy-level =8
 
@@ -22,7 +25,7 @@ name=JCD
 gamepad-enabled=0
 
 [player.controls.mouse]
-inversion=0
+          inversion=0
 raw-input=0
 
 [player.controls.keyboard]
@@ -32,4 +35,3 @@ s=move backward
 d=strafe right
 space=jump
 lshift=toggle run/walk
-
