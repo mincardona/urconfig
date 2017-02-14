@@ -1,0 +1,35 @@
+UrConfig
+
+An UrConfig file contains key-value pairs of strings, organized into named sections. Config files can be read line-by-line from top to bottom, and are easy to parse using regular expression matching. Whitespace at the beginning and end of each line is ignored, as are blank lines.
+
+Lines starting with # are comments and are ignored.
+
+# this is a single-line comment
+
+The beginning of a section is marked by a header which contains a title. A header is a single line containing the title surrounded by brackets []. A section spans from its header until a new section is declared or until the file ends.
+
+[example.title]
+
+A title can contain the following characters: letters (both uppercase and lowercase), digits, underscore, hyphen, and period. Spaces at the beginning and end of the title are ignored. A title can also be "empty" (i.e. have a length of zero).
+
+Key-value pairs are written on a single line, with the key followed by an equals sign (=) followed by the corresponding value. Keys have lengths of at least one character, and can contain the same characters as titles, except that keys cannot contain the period character. Values can contain any characters, including equals signs, except for characters which constitute a line break. Since keys cannot contain the equals sign character, the first equals sign on a key-value line is always considered a separator between the key and the value. Leading and trailing spaces are stripped from keys and values, although values can contain spaces.
+
+key=value
+
+A key-value pair belongs to the last declared section. If no section has been declared, the pair is considered to belong to the "empty section", which has the title with zero length (the empty section can also be declared explicitly with []).
+
+Two or more of a comment, key-value pair, and header cannot appear on the same line.
+
+If a section is declared twice, then the key-value pairs in each declaration are all considered to be in that section.
+
+If a key is defined twice in the same section, or in two different declarations of the same section, each definition is superseded by the next.
+
+
+
+Notes:
+
+* Sections cannot explicitly "nest", though they can be named as if they are nested (e.g. [a.b] and [a.b.c]).
+* Since keys cannot contain period characters, they can be unambiguously referenced by using their section title, followed by a period, followed by the key name (e.g. section.title.key-name).
+* Keys can also be unambiguously referenced by the section title in brackets, followed by an optional period, followed by the key name (e.g. [section.title]key-name). In this form, each bracket can be surrounded by whitespace, as can the period separating the closing header bracket and the key name.
+* To encode values which start or end with whitespace, the value should be surrounded with delimiters which are stripped by the client code (or by a human reader) (e.g. key="   value with spaces   "). UrConfig does not recognize quotes or any kind of escape sequences as special.
+

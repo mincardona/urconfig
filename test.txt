@@ -1,0 +1,35 @@
+global-version = 1.0.0
+
+[locale]
+lang = en
+date-format=DD-MM-YYYY
+
+[video.display]
+video-mode=1920x1080x144
+gamma-correction=1.1
+fullscreen-mode = exclusive
+
+[video.quality]
+bloom=1
+msaa=4
+texture-filter-mode= 3
+texture-anisotropy-level =8
+
+[player]
+name=JCD
+
+ [ player.controls]
+gamepad-enabled=0
+
+[player.controls.mouse]
+inversion=0
+raw-input=0
+
+[player.controls.keyboard]
+w=move forward
+a=strafe left
+s=move backward
+d=strafe right
+space=jump
+lshift=toggle run/walk
+
