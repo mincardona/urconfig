@@ -29,6 +29,7 @@ my $titleRegex = qr/[A-Za-z0-9_\-\.]+/;
 my $keyRegex = qr/[A-Za-z0-9_\-]+/;
 my $blankRegex = qr/^\s*$/;
 
+# parseUrCfgLines(line0, line1, line2...)
 # returns ($hashReference, $errorLinesCount)
 sub parseUrCfgLines {
     my @lines = @_;
@@ -75,6 +76,7 @@ sub parseUrCfgLines {
     return (\%sectionHash, $errCount);
 }
 
+# printUrCfgHash($cfgHash, $ostream)
 # serializes cfgHash to ostream
 sub printUrCfgHash {
     my ($cfgHash, $ostream) = @_;
@@ -93,6 +95,34 @@ sub printUrCfgHash {
     }
 }
 
+# queries a cfgHash for a value
+# two ways to call:
+# - provide a hash reference, a section title, and a key
+# - provide a hash reference and a query string
+# returns the value string, or undef if it was not found (also prints an error message to STDERR)
+sub getUrCfg {
+    my $hash = shift;
+    my $title = "";
+    my $key = "";
+    # hash, title, key
+    if (scalar(@_) == 3) {
+        $title = shift;
+        $key = shift;
+    # hash, query
+    } else {
+        my $keystr = shift;
+        if ($keystr =~ /^\s*\[\s*(${titleRegex})\s*\]\s*\.?\s*(${keyRegex})\s*$/) {
+            ($title, $key) = ($1, $2);
+        } elsif ($keystr =~ /^\s*(${titleRegex})\s*\.\s*(${keyRegex})\s*/) {
+            ($title, $key) = ($1, $2);
+        } else {
+            print STDERR "Bad query string\n";
+            return undef;
+        }
+    }
+    return $hash->{$title}->{$key};
+}
+
 #-----------main section-----------#
 
 my @lines = ();
@@ -100,14 +130,13 @@ while (my $line = <STDIN>) {
     push @lines, $line;
 }
 
-# could also use `my ($urResult, $errCount) = ...`
-my ($urResult) = parseUrCfgLines(@lines);
+# could use
+# `my ($urResult, $errCount) = ...`
+# or
+# `my ($urResult) = ...`
+my ($urResult, $errCount) = parseUrCfgLines(@lines);
 
 printUrCfgHash($urResult, *STDOUT);
-
-
-
-
 
 
 
