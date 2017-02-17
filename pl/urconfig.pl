@@ -95,11 +95,11 @@ sub printUrCfgHash {
     }
 }
 
-# queries a cfgHash for a value
+# queries a cfgHash for a value reference
 # two ways to call:
 # - provide a hash reference, a section title, and a key
 # - provide a hash reference and a query string
-# returns the value string, or undef if it was not found (also prints an error message to STDERR)
+# returns a *reference* to the value string, or undef if it was not found (also prints an error message to STDERR)
 sub getUrCfg {
     my $hash = shift;
     my $title = "";
@@ -120,7 +120,7 @@ sub getUrCfg {
             return undef;
         }
     }
-    return $hash->{$title}->{$key};
+    return \($hash->{$title}->{$key});
 }
 
 #-----------main section-----------#
@@ -137,9 +137,6 @@ while (my $line = <STDIN>) {
 my ($urResult, $errCount) = parseUrCfgLines(@lines);
 
 printUrCfgHash($urResult, *STDOUT);
-
-
-
 
 
 
