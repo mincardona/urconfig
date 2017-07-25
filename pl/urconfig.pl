@@ -33,20 +33,20 @@ my $blankRegex = qr/^\s*$/;
 # returns ($hashReference, $errorLinesCount)
 sub parseUrCfgLines {
     my @lines = @_;
-    
+
     my %sectionHash;
     my $currentSection = "";
     $sectionHash{$currentSection} = {};
-    
+
     my $errCount = 0;
     my $lineNo   = 1;
-    
+
     foreach my $line (@lines) {
         # check for k=v
         if ($line =~ /^\s*(${keyRegex})\s*=(.*)$/) {
             my ($k, $v) = ($1, trim($2));
             $sectionHash{$currentSection}{$k} = $v;
-            
+
         # check for header line
         } elsif ($line =~ /^\s*\[\s*(${titleRegex})\s*\]\s*$/) {
             my $title = $1;
@@ -54,25 +54,25 @@ sub parseUrCfgLines {
                 $sectionHash{$title} = {};
             }
             $currentSection = $title;
-            
+
         # check for comment
         } elsif ($line =~ /^\s*#(.*)$/) {
             my $commentText = trim($1);
-            
+
         # check for blank line
         } elsif ($line =~ /${blankRegex}/) {
             # excludes blank lines from being caught as
             # errors in the else clause
-            
+
         # unable to interpret line
         } else {
             print STDERR "UrConfig syntax error on line $lineNo\n";
             $errCount++;
         }
-        
+
         $lineNo++;
     }
-    
+
     return (\%sectionHash, $errCount);
 }
 
@@ -137,10 +137,3 @@ while (my $line = <STDIN>) {
 my ($urResult, $errCount) = parseUrCfgLines(@lines);
 
 printUrCfgHash($urResult, *STDOUT);
-
-
-
-
-
-
-
